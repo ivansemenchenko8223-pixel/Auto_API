@@ -12,14 +12,16 @@ class UserCreate(BaseModel):
                        description="Для безопасности используйте надежный пароль, включающий заглавные и строчные буквы, цифры, спецсимволы")
                        
                        
-class UserData(UserCreate):
-    pass
+class UserData(BaseModel):
+    email:EmailStr
+    phone_number:int
+    username:str
+    password:str
     
-
 class UserLogin(BaseModel):
-    email:EmailStr    #???нужно ли дуллировать Field, как в UserCreate
-    phone_number:int  #???
-    password:str      #???
+    email:EmailStr
+    phone_number:int
+    password:str
     
 
 

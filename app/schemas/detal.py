@@ -17,8 +17,3 @@ class DetalData(BaseModel):
         article_number:str=Field(description="Артикул включает себя латинские буквы и цифры")
         price:float
         quantity_in_stock:int
-    
-
-    
-    
-
