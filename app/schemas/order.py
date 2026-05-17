@@ -9,11 +9,11 @@ class OrderData(BaseModel):
                             description="При формировании заказа генерируется рандомный четырехзначный код получения")
     
     
-class OrderItem(Basemodel):
+class OrderItem(BaseModel):
      id:int
      name:str
      manufacturer:str
-     article_number:str???
+     article_number:str
      price:float
      quantity:int
     
