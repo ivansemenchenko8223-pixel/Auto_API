@@ -13,7 +13,7 @@ class Order(Base):
     status = Column(String, default="pending") #pending, completed, cancelled
     total_price = Column(Float, default=0.0)
 
-    user = relationship("User", back_populates="orders")
+    user = relationship("app.models.user.User", back_populates="orders")
     items = relationship("OrderItem", back_populates="orders")
 
 class OrderItem(Base):
@@ -25,4 +25,4 @@ class OrderItem(Base):
     price = Column(Float)
 
     order = relationship("Order", back_populates="order_items")
-    detal = relationship("Detal", back_populates="order_items")
+    detal = relationship("app.models.detal.Detal", back_populates="order_items")
