@@ -14,4 +14,7 @@ class Detal(Base):
     price = Column(float, nullable=False)
     quantity_in_stock = Column(Integer, nullable=False)
     
-    order_items = relationship("OrderItem", back_populates="detals")
+    order_items = relationship("app.models.order.OrderItem", back_populates="detals")
+
+
+    #is telling you that SQLAlchemy expects a column type in the class definition, not the function object that has been provided

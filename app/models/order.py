@@ -14,7 +14,7 @@ class Order(Base):
     total_price = Column(Float, default=0.0)
 
     user = relationship("app.models.user.User", back_populates="orders")
-    items = relationship("OrderItem", back_populates="orders")
+    items = relationship("app.models.order.OrderItem", back_populates="orders")
 
 class OrderItem(Base):
     __tablename__ = "order_items"
