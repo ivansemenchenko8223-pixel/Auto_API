@@ -20,9 +20,9 @@ class OrderItem(Base):
     __tablename__ = "order_items"
     id = Column(Integer, primary_key=True, autoincrement=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
-    detal_id = Column(Integer, ForeignKey("products.id"))
+    detal_id = Column(Integer, ForeignKey("detals.id"))
     quantity =  Column(Integer, default = 1)
     price = Column(Float)
 
-    order = relationship("Order", back_populates="order_items")
+    order = relationship("app.models.order.Order", back_populates="order_items")
     detal = relationship("app.models.detal.Detal", back_populates="order_items")

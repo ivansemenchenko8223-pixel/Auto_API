@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Float
 from app.db.session import Base
 from datetime import datetime
 from sqlalchemy.orm import relationship
@@ -11,10 +11,10 @@ class Detal(Base):
     name = Column(String, nullable=False)
     manufacturer = Column(String, nullable=False)
     article_number = Column(String, nullable=False)
-    price = Column(float, nullable=False)
+    price = Column(Float, nullable=False)
     quantity_in_stock = Column(Integer, nullable=False)
     
     order_items = relationship("app.models.order.OrderItem", back_populates="detals")
 
 
-    #is telling you that SQLAlchemy expects a column type in the class definition, not the function object that has been provided
+ 
