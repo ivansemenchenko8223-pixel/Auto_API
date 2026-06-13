@@ -26,16 +26,16 @@ def register(user:UserCreate, db:Session=Depends(get_db)):
     return register_user(user, db)
 
 
-# @router.post("/login")
-# def login(form_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depends(get_db)):
-#     user = authenticate_user(form_data.username, form_data.password, db)
-#     if not user:
-#         raise HTTPException(
-#             status_code=status.HTTP_401_UNAUTHORIZED,
-#             detail = "Неправильный username или password",
-#             headers= {"WWW-Authenticate":"Bearer"}
-#         )
+@router.post("/login")
+def login(form_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depends(get_db)):
+    user = authenticate_user(form_data.username, form_data.password, db)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail = "Неправильный username или password",
+            headers= {"WWW-Authenticate":"Bearer"}
+        )
     
-#     #access_token_expires = timedelta(minutes=int(config.ACCESS_TOKEN_EXPIRE_MINUTES))
-#     access_token = create_access_token({"sub":user.username})
-#     return {"access_token":access_token, "token_type":"Bearer"}
+    #access_token_expires = timedelta(minutes=int(config.ACCESS_TOKEN_EXPIRE_MINUTES))
+    access_token = create_access_token({"sub":user.username})
+    return {"access_token":access_token, "token_type":"Bearer"}
