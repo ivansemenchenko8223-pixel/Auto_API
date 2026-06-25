@@ -17,8 +17,15 @@ def get_current_user(token:str=Depends(oauth2_scheme), db:Session=Depends(get_db
         detail="Неправильные входные данные",
         headers={"WWW-Authenticate":"Bearer"}
     )
+
+    print("Декодирован токен")
+
+    print(config.SECRET_KEY, config.ALGORITHM)
+
+
     try:
-        payload = jwt.decode(token, config.SECRET_KEY, [config.ALGORITHM])
+        payload = jwt.decode(token, config.SECRET_KEY, algorithms = ["HS256"])
+        print("Токен декодирован")
         username = payload.get("sub")
         if not username:
             raise credentails_exception
