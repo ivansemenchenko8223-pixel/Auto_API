@@ -18,16 +18,16 @@ from app.models.detal import Detal
 router = APIRouter(prefix="/detals")
 
 
-@router.get("/")
+@router.get("/get_all_detal_from_db", tags=["Детали"], summary="Получить все детали из базы данных")
 def get_detals(offset:int=0, limit:int=100, db:Session=Depends(get_db)):
     return detal.get_detals(db, limit, offset) 
 
 
-@router.get("/get_detal_by_article")
+@router.get("/get_detal_by_article", tags=["Детали"], summary="Получить деталь по артикулу из базы данных")
 def get_detal(detal_id:str, db:Session=Depends(get_db)):
     return detal.get_detal(db, detal_id) 
 
 
-@router.post("/")
+@router.post("/create_new_detal", tags=["Детали"], summary="Добавить деталь в базу данных (Необходимы права админа)")
 def create_detal(detal:DetalData, db:Session=Depends(get_db)):
     return create_new_detal(db,detal)
