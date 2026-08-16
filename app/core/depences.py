@@ -12,34 +12,28 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 
 def get_current_user(token:str=Depends(oauth2_scheme), db:Session=Depends(get_db)):
-    credentails_exception = HTTPException(
+    credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Неправильные входные данные",
         headers={"WWW-Authenticate":"Bearer"}
     )
 
-    print("Декодирован токен")
-
-    print(config.SECRET_KEY, config.ALGORITHM)
-
-
     try:
         payload = jwt.decode(token, config.SECRET_KEY, algorithms = ["HS256"])
-        print("Токен декодирован")
         username = payload.get("sub")
         if not username:
-            raise credentails_exception
+            raise credentials_exception
         
         token_data = TokenData(username=username)
 
     except:
-        raise credentails_exception
+        raise credentials_exception
     
 
     user = get_user_by_username(token_data.username, db)
 
     if not user:
-        raise credentails_exception
+        raise credentials_exception
     
     if not user.is_active:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,

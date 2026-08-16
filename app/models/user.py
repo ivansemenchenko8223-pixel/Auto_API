@@ -13,5 +13,6 @@ class User(Base):
     username = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), default=datetime.now())
+    is_active = Column(Boolean, default=True)
 
     orders = relationship("app.models.order.Order", back_populates="users")
