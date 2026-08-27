@@ -2,3 +2,4 @@ venv
 *.db
 .env
 *.jpg
+__pycache__
