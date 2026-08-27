@@ -42,4 +42,4 @@ def login(form_data:OAuth2PasswordRequestForm=Depends(), db:Session=Depends(get_
     
     #access_token_expires = timedelta(minutes=int(config.ACCESS_TOKEN_EXPIRE_MINUTES))
     access_token = create_access_token({"sub":user.username})
-    return {"access_token":access_token, "token_type":"Bearer"}
+    return {"access_token":access_token, "token_type":"Bearer"} 

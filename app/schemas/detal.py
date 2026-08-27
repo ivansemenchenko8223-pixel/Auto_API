@@ -18,5 +18,5 @@ class DetalData(BaseModel):
                 new_text = article.replace(" ", "").upper()
                 return new_text
 
-
+ 
       

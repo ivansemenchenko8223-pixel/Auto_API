@@ -26,3 +26,4 @@ class OrderItem(Base):
 
     order = relationship("app.models.order.Order", back_populates="order_items")
     detals = relationship("app.models.detal.Detal", back_populates="order_items")
+    

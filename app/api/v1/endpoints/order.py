@@ -27,3 +27,4 @@ def create_order(
         return create_new_order(db, order, current_user.id)
     except ValueError as error:
         raise HTTPException(status_code=400, detail=str(error))
+    

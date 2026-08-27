@@ -21,3 +21,4 @@ class OrderResponse(BaseModel):
     user_id: int
     total_price: float
     items: List[OrderItemResponse]
+    
