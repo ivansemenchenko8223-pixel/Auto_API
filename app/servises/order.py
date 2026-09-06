@@ -1,57 +1,36 @@
 from sqlalchemy.orm import Session
 from app.models.order import Order, OrderItem
+<<<<<<< HEAD
 from app.schemas.order import OrderItemsResponce, OrderItem
 from app.models.detal import Detal
 from app.models.order import Order as OrderModel, OrderItem as OrderItemModel
 from app.schemas.order import OrderItemsResponce as OrderSchema, OrderItem as OrderItemSchema
+=======
+from app.models.detal import Detal
+from app.schemas.order import OrderCreate, OrderResponse, OrderItemResponse
+>>>>>>> 8860929115287add61d8bfc6ecb21363bdda5a75
 
-def get_order(db:Session, order_id:int):
+def get_order(db: Session, order_id: int):
     return db.query(Order).filter(Order.id == order_id).first()
 
+def get_user_orders(db: Session, user_id: int):
+    return db.query(Order).filter(Order.user_id == user_id).all()
 
-def get_user_orders(db:Session, user_id:int):
-    return db.query(Order).filter(user_id == Order.user_id).all()
-
-
-def to_order_schema(db_order: OrderModel, db: Session):
-    items = []
-    for item in db_order.items:
-        items.append(
-            OrderItemSchema(
-                id = items.id,
-                name = items.name,
-                manufacturer = item.manufacturer,
-                article_number = item.article_number,
-                price = item.price,
-                quantity = item.quantity
-            )
-        )
-
-      
-    return OrderSchema(
-        id=db_order.id,
-        total_price=db_order.total_price,
-        code_of_receipt=db_order.code_of_receipt
-    )
-
-
-def create_order(db: Session, order: OrderSchema, user_id: int):
-    db_order = OrderModel(user_id=user_id)
+def create_order(db: Session, order_data: OrderCreate, user_id: int) -> OrderResponse:
+    db_order = Order(user_id=user_id)
     db.add(db_order)
     db.flush()
 
-    total_price = 0
+    total_price = 0.0
     order_items = []
 
-    for item in order.items:
-        detal = db.query(Detal).filter(Detal.article_number == item.article_number).first()
+    for item in order_data.items:
+        detal = db.query(Detal).filter(Detal.id == item.detal_id).first()
         if not detal:
-            raise ValueError(f"Деталь с данным {item.article_number} не найдена")
-
+            raise ValueError(f"Деталь с id {item.detal_id} не найдена")
         price = detal.price * item.quantity
         total_price += price
-        db_item = OrderItemModel(
-            id=db_order.id,
+        db_item = OrderItem(
             order_id=db_order.id,
             detal_id=item.detal_id,
             quantity=item.quantity,
@@ -63,4 +42,22 @@ def create_order(db: Session, order: OrderSchema, user_id: int):
     db_order.total_price = total_price
     db.commit()
     db.refresh(db_order)
-    return to_order_schema(db_order, db)
+
+    items_response = []
+    for item in order_items:
+        detal = db.query(Detal).filter(Detal.id == item.detal_id).first()
+        items_response.append(OrderItemResponse(
+            id=item.id,
+            name=detal.name if detal else "",
+            manufacturer=detal.manufacturer if detal else "",
+            article_number=detal.article_number if detal else "",
+            price=item.price,
+            quantity=item.quantity
+        ))
+
+    return OrderResponse(
+        id=db_order.id,
+        user_id=db_order.user_id,
+        total_price=db_order.total_price,
+        items=items_response
+    )

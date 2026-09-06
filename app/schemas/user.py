@@ -22,7 +22,7 @@ class UserLogin(BaseModel):
     email:EmailStr
     phone_number:int
     password:str
-    
+
 
 
 

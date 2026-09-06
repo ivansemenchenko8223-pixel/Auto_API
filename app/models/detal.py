@@ -17,4 +17,3 @@ class Detal(Base):
     order_items = relationship("app.models.order.OrderItem", back_populates="detals")
 
 
- 

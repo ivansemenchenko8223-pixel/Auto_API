@@ -2,7 +2,11 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class DetalData(BaseModel):
+<<<<<<< HEAD
         #id:int
+=======
+        # id:int
+>>>>>>> 8860929115287add61d8bfc6ecb21363bdda5a75
         name:str=Field(description="Название детали")            
         manufacturer:str=Field(min_length=2,
                                max_length=20,
@@ -18,5 +22,5 @@ class DetalData(BaseModel):
                 new_text = article.replace(" ", "").upper()
                 return new_text
 
-
+ 
       

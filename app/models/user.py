@@ -16,3 +16,4 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     orders = relationship("app.models.order.Order", back_populates="users")
+    

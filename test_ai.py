@@ -1,6 +1,6 @@
 import requests
 
-BASE_URL = "http://localhost:4000/api/v1"
+BASE_URL = "http://localhost:8000/api/v1"
 
 # Данные пользователя с учётом ограничений длины
 TEST_USER = {
@@ -10,11 +10,15 @@ TEST_USER = {
     "password": "pass12345"            # 7 символов, ≤12
 }
 
+<<<<<<< HEAD
 detal_id = None
+=======
+detal_id = None 
+>>>>>>> 8860929115287add61d8bfc6ecb21363bdda5a75
 
 # Данные для создания детали – все обязательные поля из схемы
 TEST_DETAL = {
-    "id": 1,                         # если автоинкремент, можно передать 0 или None, но требуется – оставим
+    # "id": 1,                         # если автоинкремент, можно передать 0 или None, но требуется – оставим
     "article": "ART002",             # возможно, необязательно
     "article_number": "ART002",
     "name": "Деталь для теста requests",
@@ -53,6 +57,7 @@ def test_login():
     return data["access_token"]
 
 def test_create_detal():
+    global detal_id
     url = f"{BASE_URL}/detals/create_new_detal"
     resp = requests.post(url, json=TEST_DETAL)
     assert resp.status_code == 200, f"Ошибка создания детали: {resp.text}"
@@ -166,3 +171,4 @@ def run_all_tests():
 
 if __name__ == "__main__":
     run_all_tests()
+    

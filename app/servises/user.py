@@ -18,3 +18,4 @@ def get_user_by_phone_number(phone_number: int, db: Session) -> User | None:
 def get_user_by_id(id: int, db: Session) -> User | None:
     return db.query(User).filter(User.id == id).first()
 
+
