@@ -47,7 +47,7 @@ def test_api():
         "password": password
     }
     
-    resp = requests.post(f"{BASE_URL}/auth/login", json=login_data)
+    resp = requests.post(f"{BASE_URL}/auth/login", data=login_data)
     if resp.status_code == 200:
         #token = resp.json().get("access_token")
         print("   Токен получен")

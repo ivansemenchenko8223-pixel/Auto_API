@@ -1,31 +1,26 @@
 from sqlalchemy.orm import Session
+
 from app.models.user import User
 from app.schemas.user import UserCreate
-from app.core.security import get_password_hash, verify_password, create_access_token
-from app.servises.user import get_user_by_username, get_user_by_phone_number
+from app.core.security import get_password_hash, verify_password
+from app.servises.user import get_user_by_username
 
 
-def authenticate_user(username:str, password:str, db:Session)->User:
+def authenticate_user(username: str, password: str, db: Session) -> User | None:
     user = get_user_by_username(username, db)
     if not user or not verify_password(password, hash_password=user.hashed_password):
         return None
-    
-    # user = get_user_by_phone_number(phone_number, db)
-    # if not user or not verify_password(password, hash_password=user.hashed_password):
-    #     return None
     return user
 
 
-def register_user(user:UserCreate, db:Session)->User:
-    hash_password = get_password_hash(user.password)
+def register_user(user: UserCreate, db: Session) -> User:
     db_user = User(
-        email = user.email,
-        phone_number =user.phone_number,
-        username = user.username,
-        hashed_password = hash_password
+        email=user.email,
+        phone_number=user.phone_number,
+        username=user.username,
+        hashed_password=get_password_hash(user.password),
     )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
-

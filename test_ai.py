@@ -10,11 +10,7 @@ TEST_USER = {
     "password": "pass12345"            # 7 символов, ≤12
 }
 
-<<<<<<< HEAD
 detal_id = None
-=======
-detal_id = None 
->>>>>>> 8860929115287add61d8bfc6ecb21363bdda5a75
 
 # Данные для создания детали – все обязательные поля из схемы
 TEST_DETAL = {
@@ -52,7 +48,7 @@ def test_login():
     assert resp.status_code == 200, f"Ошибка входа: {resp.text}"
     data = resp.json()
     assert "access_token" in data
-    assert data["token_type"] == "Bearer"
+    assert data["token_type"].lower() == "bearer"
     print("[OK] Вход выполнен, токен получен")
     return data["access_token"]
 
