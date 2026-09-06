@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from app.models.order import Order, OrderItem
-from app.schemas.order import OrderData, OrderItem
+from app.schemas.order import OrderItemsResponce, OrderItem
 from app.models.detal import Detal
 from app.models.order import Order as OrderModel, OrderItem as OrderItemModel
-from app.schemas.order import OrderData as OrderSchema, OrderItem as OrderItemSchema
+from app.schemas.order import OrderItemsResponce as OrderSchema, OrderItem as OrderItemSchema
 
 def get_order(db:Session, order_id:int):
     return db.query(Order).filter(Order.id == order_id).first()

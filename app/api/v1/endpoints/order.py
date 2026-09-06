@@ -2,10 +2,10 @@ from fastapi import HTTPException, status, Depends, APIRouter
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from app.models.order import Order as OrderModel, OrderItem as OrderItemModel
-from app.schemas.order import OrderData as OrderSchema, OrderItem as OrderItemSchema
+from app.schemas.order import OrderItemsResponce as OrderData, OrderItem as OrderItemSchema
 from app.models.detal import Detal
 from app.core.config import config
-from app.schemas.order import OrderData, OrderItem
+from app.schemas.order import OrderCreate, OrderItem, OrderItemCreate, OrderItemsResponce
 from app.db.session import get_db
 from app.servises.user import get_user_by_username, get_user_by_email
 from datetime import timedelta

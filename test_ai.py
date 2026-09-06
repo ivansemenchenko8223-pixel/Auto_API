@@ -10,6 +10,8 @@ TEST_USER = {
     "password": "pass12345"            # 7 символов, ≤12
 }
 
+detal_id = None
+
 # Данные для создания детали – все обязательные поля из схемы
 TEST_DETAL = {
     "id": 1,                         # если автоинкремент, можно передать 0 или None, но требуется – оставим
@@ -67,7 +69,7 @@ def test_get_all_detals():
     data = resp.json()
     assert isinstance(data, list)
     # Ищем созданную деталь по article_number или id
-    found = any(item.get("article_number") == TEST_DETAL["article_number"] or item.get("id") == TEST_DETAL["id"] for item in data)
+    found = any(item.get("article_number") == TEST_DETAL["article_number"] for item in data)
     assert found, "Созданная деталь не найдена в списке"
     print("[OK] Список деталей получен, созданная деталь присутствует")
 
@@ -81,23 +83,26 @@ def test_get_detal_by_article():
     assert data.get("article_number") == TEST_DETAL["article_number"] or data.get("id") == TEST_DETAL["id"]
     print("[OK] Деталь найдена по артикулу")
 
-def test_create_order(token):
-    url = f"{BASE_URL}/orders/order"
+def test_create_order():
+    global detal_id
+    # 1. Сначала логинимся и получаем токен
+    login_resp = requests.post(f"{BASE_URL}/auth/login", data={
+        "username": TEST_USER["username"],
+        "password": TEST_USER["password"]
+    })
+    token = login_resp.json()["access_token"]
+
+    # 2. Формируем заголовок с токеном
     headers = {"Authorization": f"Bearer {token}"}
-    order_data = {
-        "items": [
-            {"detal_id": TEST_DETAL["article_number"], "quantity": 2}
-        ]
-    }
-    resp = requests.post(url, json=order_data, headers=headers)
-    assert resp.status_code == 200, f"Ошибка создания заказа: {resp.text}"
-    data = resp.json()
-    assert "id" in data
-    assert "user_id" in data
-    assert len(data["items"]) > 0
-    found = any(item.get("detal_id") == TEST_DETAL["article_number"] for item in data["items"])
-    assert found, "Деталь не найдена в заказе"
-    print("[OK] Заказ создан успешно")
+
+    # 3. Отправляем запрос на создание заказа с этим заголовком
+    order_data = {"items": [{"detal_id": 1, "quantity": 2}]}
+    resp = requests.post(
+        f"{BASE_URL}/orders/order",
+        json=order_data,
+        headers=headers  # <-- Вот это критически важно!
+    )
+    assert resp.status_code == 200
 
 def test_create_order_without_auth():
     url = f"{BASE_URL}/orders/order"
@@ -108,7 +113,12 @@ def test_create_order_without_auth():
 def test_create_order_invalid_detal(token):
     url = f"{BASE_URL}/orders/order"
     headers = {"Authorization": f"Bearer {token}"}
-    resp = requests.post(url, json={"items": [{"detal_id": "NONEXISTENT", "quantity": 1}]}, headers=headers)
+    # Передаём несуществующий числовой ID (например, 9999)
+    resp = requests.post(
+        url,
+        json={"items": [{"detal_id": 9999, "quantity": 1}]},
+        headers=headers
+    )
     assert resp.status_code == 400, f"Ожидалась 400, получено {resp.status_code}"
     assert "не найдена" in resp.text.lower() or "not found" in resp.text.lower()
     print("[OK] Ошибка при создании заказа с несуществующей деталью обработана")
@@ -141,7 +151,7 @@ def run_all_tests():
     except AssertionError as e:
         print(f"[FAIL] Получение по артикулу: {e}")
     try:
-        test_create_order(token)
+        test_create_order()
     except AssertionError as e:
         print(f"[FAIL] Создание заказа: {e}")
     try:

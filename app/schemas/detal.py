@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class DetalData(BaseModel):
-        id:int
+        #id:int
         name:str=Field(description="Название детали")            
         manufacturer:str=Field(min_length=2,
                                max_length=20,

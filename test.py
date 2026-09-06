@@ -16,9 +16,9 @@ def random_phone_number():
 
 def test_api():
 
-    username = f"user_{random_string()}"
-    email = f"{username}@example.com"
-    phone_number = f"{random_phone_number()}"
+    username = "qwertyuiop1" #f"user_{random_string()}"
+    email = "username99@yandex.ru" #f"{username}@example.com"
+    phone_number = "89061852827" #f"{random_phone_number()}"
     password = "testpass123"
 
 
@@ -42,13 +42,21 @@ def test_api():
     # 2. Логин
     print("2. Логин")
     login_data = {
-        "username" : username,
-        "email" : email,
-        "phone_number" : phone_number,
-        "password" : password 
+        "username": username,
+        #"email": email,
+        "password": password
     }
     
-    resp = requests.post(f"{BASE_URL}/auth/login", json = login_data)
+    resp = requests.post(f"{BASE_URL}/auth/login", json=login_data)
+    if resp.status_code == 200:
+        #token = resp.json().get("access_token")
+        print("   Токен получен")
+    else:
+        print(f"   Ошибка {resp.status_code}:", resp.text)
+        return
+
+    
+    #headers = {"Authorization": f"Bearer {token}"}
     
 
 
