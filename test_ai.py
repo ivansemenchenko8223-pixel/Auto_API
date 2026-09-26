@@ -4,9 +4,9 @@ BASE_URL = "http://localhost:8000/api/v1"
 
 # Данные пользователя с учётом ограничений длины
 TEST_USER = {
-    "username": "testuser_req",
-    "email": "test_req@example.com",
-    "phone_number": "+7123456799",   # 11 символов (плюс + 10 цифр)
+    "username": "testuser10_req",
+    "email": "test10req@example.com",
+    "phone_number": "87123456710",   # 11 символов (плюс + 10 цифр)
     "password": "pass12345"            # 7 символов, ≤12
 }
 
@@ -32,6 +32,7 @@ def test_register():
     assert "id" in data
     assert data["username"] == TEST_USER["username"]
     assert data["email"] == TEST_USER["email"]
+    assert data["phone_number"] == TEST_USER["phone_number"]
     print("[OK] Регистрация прошла успешно")
     return data
 
